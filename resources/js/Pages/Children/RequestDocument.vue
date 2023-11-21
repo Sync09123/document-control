@@ -5,7 +5,14 @@
       <div class="column w-[500px] p-5 items-start">
         <div class="column w-full">
           <span class="py-2"> Requested by:</span>
-          <q-btn color="secondary" label="Select User" />
+
+          <UserModal >
+            <template v-slot="{ open }">
+                <q-btn @click="open" color="secondary" label="Select User" />
+            </template>
+            
+          </UserModal>
+        
         </div>
 
         <div class="w-full py-2">
@@ -33,7 +40,10 @@
 
 <script>
 import { ref } from "vue";
+
+import UserModal from './Modal/UserModal.vue';
 export default {
+    components: {UserModal},
   setup() {
     return {
       model: ref(null),
