@@ -61,7 +61,7 @@ const toggleLeftDrawer = () => {
 
     <!-- Page Content -->
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer  v-model="leftDrawerOpen" side="left" bordered>
       <!-- Responsive Navigation Menu -->
       <div class="mt-3 space-y-1">
         <ResponsiveNavLink

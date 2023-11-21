@@ -10,14 +10,16 @@
       </q-card-section>
       <q-card-section class="row items-center">
         <div class="w-full">
+            {{bag}}
           <q-form @submit.prevent="onSubmit">
-            <q-input v-model="form.firstname" class="py-1" outlined label="Firstname" />
-
-            <q-input v-model="form.lastname" class="py-1" outlined label="Lastname" />
+            <div class="text-red-500" v-if="errors.firstname"> {{errors.firstname}}</div>
+            <q-input v-model="form.firstname" class="py-1" outlined label="Firstname*" />
+            <div class="text-red-500" v-if="errors.lastname"> {{errors.lastname}}</div>
+            <q-input v-model="form.lastname" class="py-1" outlined label="Lastname*" />
 
             <q-input v-model="form.middlename" class="py-1" outlined label="Middlename" />
-
-            <q-input outlined v-model="form.birthdate" label="Birth Date" mask="date" >
+            <div class="text-red-500" v-if="errors.birthdate"> {{errors.birthdate}}</div>
+            <q-input outlined v-model="form.birthdate" label="Birth Date*" mask="date" >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy
@@ -55,9 +57,25 @@
 
 <script>
 import { router } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
+import { usePage } from '@inertiajs/vue3'
 export default {
+
   setup() {
+    const page = usePage()
+
+    const errors = computed(() => page.props.errors)
+    const bag = computed(()=>Object.keys(page.props.errors).length > 0)
+
+    
+
+    watchEffect(()=>{
+        if(!bag.value){
+            addDialog.value = false
+         }
+    })
+
+
     const addDialog = ref(false);
     const form = ref({
       firstname: "",
@@ -69,17 +87,38 @@ export default {
       address: "",
     });
 
+
+
+    watchEffect(()=>{
+            if(!errors.value){
+                addDialog.value=  false
+            }
+         })
+
     return {
       addDialog,
+      bag,
       form,
       open: () => {
         console.log("open");
         addDialog.value = true;
       },
       router,
-      onSubmit: () => {
-        router.post(route("user.create", form.value));
+      onSubmit: async() => {
+       
+
+         router.post(route("user.create", form.value),{
+            preserveState: (page) => Object.keys(page.props.errors).length > 0,
+         })
+         
+         
+      
+         
+         
+   
+        
       },
+      errors
     };
   },
 };

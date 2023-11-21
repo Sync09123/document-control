@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class DocumentController extends Controller
@@ -13,6 +14,7 @@ class DocumentController extends Controller
 
         return Inertia::render('Document',[
             'create'=>route('user.create'),
+            'users'=>UserInfo::all()
            
         ]);
 

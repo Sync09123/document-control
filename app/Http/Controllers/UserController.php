@@ -33,7 +33,7 @@ class UserController extends Controller
 
       
 
-     //  return to_route('document');
+       return to_route('document');
 
       return Inertia::render('Document',['user'=>$user]);
 

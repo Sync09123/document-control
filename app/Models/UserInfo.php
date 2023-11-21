@@ -16,4 +16,20 @@ class UserInfo extends Model
         'birthdate',
         'address',
     ];
+    protected $appends = ['full_name'];
+    public function getFullNameAttribute()
+    {
+
+        $full_name = $this->firstname . ' ' . $this->lastname;
+
+        //!empty($this->middlename) || 
+        if ($this->middlename != null) {
+            $full_name .= " " . strtoupper($this->middlename[0]) . '.';
+        }
+
+        return $full_name;
+
+
+    }
+
 }
