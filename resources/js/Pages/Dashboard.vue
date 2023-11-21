@@ -7,7 +7,7 @@ import Welcome from '@/Components/Welcome.vue';
     <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
+                 Dashboard
             </h2>
         </template>
 
@@ -18,5 +18,14 @@ import Welcome from '@/Components/Welcome.vue';
                 </div>
             </div>
         </div>
+
+      
     </AppLayout>
 </template>
+<script>
+import { ref } from 'vue'
+
+export default {
+
+}
+</script>
