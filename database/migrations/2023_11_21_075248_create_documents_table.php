@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('ref_id');
             $table->string('document_type_id');
+            $table->string('user_id');
             $table->string('user_info_id');
             $table->string('path');
  
       
             $table->timestamps();
+
+            $table->foreign('document_type_id')->references('id')->on('document_types');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_info_id')->references('id')->on('user_info');
         });
     }
 
