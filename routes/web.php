@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,11 @@ Route::middleware([
 
 
     Route::get('/documents',[DocumentController::class,'index'])->name('document');
+
+    Route::prefix('user')->group(function(){
+
+        Route::post('/create',[UserController::class,'store'])->name('user.create');
+    });
 
  
 });

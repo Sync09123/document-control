@@ -12,8 +12,8 @@ class DocumentController extends Controller
     public function index(){
 
         return Inertia::render('Document',[
-
-
+            'create'=>route('user.create'),
+           
         ]);
 
     }
