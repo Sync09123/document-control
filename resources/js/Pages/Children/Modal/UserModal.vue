@@ -26,7 +26,7 @@ import UserTableVue from '@/Pages/Children/UserTable.vue'
 export default {
 components:{UserTableVue},
     setup(){
-        const dialog = ref(false)
+        const dialog = ref(true)
         return {
             open:()=>{
                 dialog.value = true

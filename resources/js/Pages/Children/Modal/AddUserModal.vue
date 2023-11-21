@@ -69,14 +69,11 @@ export default {
 
     
 
-    watchEffect(()=>{
-        if(!bag.value){
-            addDialog.value = false
-         }
-    })
-
 
     const addDialog = ref(false);
+
+
+
     const form = ref({
       firstname: "",
       lastname: "",
@@ -87,7 +84,11 @@ export default {
       address: "",
     });
 
-
+    watchEffect(()=>{
+        if(!bag.value){
+            addDialog.value = false
+         }
+    })
 
     watchEffect(()=>{
             if(!errors.value){
