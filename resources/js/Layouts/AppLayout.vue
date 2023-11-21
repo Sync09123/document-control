@@ -64,13 +64,24 @@ const toggleLeftDrawer = () => {
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- Responsive Navigation Menu -->
       <div class="mt-3 space-y-1">
-
         <ResponsiveNavLink
           :href="route('dashboard')"
           :active="route().current('dashboard')"
         >
           Dashboard
         </ResponsiveNavLink>
+
+
+
+        <ResponsiveNavLink
+          :href="route('document')"
+          :active="route().current('document')"
+        >
+          Documents
+        </ResponsiveNavLink>
+
+
+        <q-separator/>
         <ResponsiveNavLink
           :href="route('profile.show')"
           :active="route().current('profile.show')"
@@ -152,9 +163,14 @@ const toggleLeftDrawer = () => {
         </template>
       </div>
     </q-drawer>
-
-    <main class="">
-      <slot />
-    </main>
+    <div class="py-12">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <main class="">
+            <slot />
+          </main>
+        </div>
+      </div>
+    </div>
   </q-layout>
 </template>
