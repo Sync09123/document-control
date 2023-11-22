@@ -41,9 +41,13 @@ Route::middleware([
         ]);
     })->name('dashboard');
 
+    Route::prefix('documents')->group(function(){
 
-    Route::get('/documents',[DocumentController::class,'index'])->name('document');
 
+    Route::get('/',[DocumentController::class,'index'])->name('document');
+    Route::post('/type',[DocumentController::class,'storeType'])->name('documentType.create');
+
+    });
     Route::prefix('user')->group(function(){
 
         Route::post('/create',[UserController::class,'store'])->name('user.create');

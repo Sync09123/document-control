@@ -85,7 +85,6 @@ export default {
 
     return {
       user,
-      
       model: ref(null),
       options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
     };

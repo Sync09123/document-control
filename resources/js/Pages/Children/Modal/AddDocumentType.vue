@@ -9,19 +9,25 @@
       </q-card-section>
 
       <q-card-section class="p-5">
-        <q-form>
+       
 
             <div>
-                <q-input dense outlined label="Name"/>
+                <q-input v-model="name" dense outlined label="Name"/>
             </div>
 
             <div class="row justify-end py-1">
-                <q-btn type="submit" color="secondary" label="Submit"/>
+                <ConfirmDialog @onSubmit="onSubmit" >
+
+                    <template v-slot="{open}">
+                        <q-btn  @click="open" type="submit" color="secondary" label="Submit"/>
+                    </template>
+                    
+                </ConfirmDialog>
+               
 
             </div>
 
 
-        </q-form>
         
     </q-card-section>
     </q-card>
@@ -30,15 +36,25 @@
 
 <script>
 import { ref } from "vue";
-
+import ConfirmDialog from '@/Components/ConfirmDialog.vue'
+import { router } from "@inertiajs/vue3";
 export default {
+    components:{ConfirmDialog},
   setup() {
     const dialog = ref(false);
+    const name = ref('')
     return {
       open: () => {
         dialog.value = true;
       },
       dialog,
+      name,
+      onSubmit:async()=>{
+
+         router.post(route('documentType.create',{name:name.value}))
+
+        console.log('submit',)
+      }
     };
   },
 };
