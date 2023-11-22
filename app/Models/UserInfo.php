@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class UserInfo extends Model
 {
     use HasFactory;
@@ -23,7 +23,7 @@ class UserInfo extends Model
         $full_name = $this->firstname . ' ' . $this->lastname;
 
         //!empty($this->middlename) || 
-        if ($this->middlename != null) {
+        if ($this->middlename != 'N/A') {
             $full_name .= " " . strtoupper($this->middlename[0]) . '.';
         }
 
@@ -31,5 +31,14 @@ class UserInfo extends Model
 
 
     }
+
+    
+    protected function middlename(): Attribute
+    {
+        return Attribute::make(
+            get: fn ( $value) =>$value ?? 'N/A',
+        );
+    }
+
 
 }

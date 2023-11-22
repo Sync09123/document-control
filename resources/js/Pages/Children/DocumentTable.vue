@@ -10,6 +10,7 @@
   </template>
   
   <script>
+
   const columns = [
     {
       name: 'name',
@@ -135,9 +136,11 @@
   export default {
     props:['title'],
     setup () {
+
       return {
         columns,
-        rows
+        rows,
+        
       }
     }
   }

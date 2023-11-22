@@ -14,9 +14,12 @@ class DocumentController extends Controller
 
         return Inertia::render('Document',[
             'create'=>route('user.create'),
-            'users'=>UserInfo::all()
+            'users'=>UserInfo::all(),
+            'user'=>null
            
         ]);
 
     }
+
+    
 }

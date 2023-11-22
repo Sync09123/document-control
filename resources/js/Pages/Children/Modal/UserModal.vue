@@ -12,7 +12,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-            <UserTableVue />
+            <UserTableVue @selectUser="selectUser"/>
         </q-card-section>
 
       </q-card>
@@ -26,13 +26,17 @@ import UserTableVue from '@/Pages/Children/UserTable.vue'
 export default {
 components:{UserTableVue},
     setup(){
-        const dialog = ref(true)
+        const dialog = ref(false)
         return {
             open:()=>{
                 dialog.value = true
                 
             },
-            dialog
+            dialog,
+            selectUser:()=>{
+              dialog.value = false
+                
+            }
         }
     }
 }

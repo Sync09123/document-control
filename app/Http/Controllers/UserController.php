@@ -31,11 +31,10 @@ class UserController extends Controller
             'address'=>$request['address']]
         );
 
-      
 
        return to_route('document');
 
-      return Inertia::render('Document',['user'=>$user]);
+     
 
 
 

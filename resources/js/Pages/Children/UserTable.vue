@@ -2,6 +2,8 @@
   <div>
   
     <q-table :filter="filter" :columns="columns" :rows="users" row-key="full_name">
+
+
       <template v-slot:top-right>
         <q-input v-model="filter" borderless dense debounce="300" placeholder="Search">
           <template v-slot:append>
@@ -16,6 +18,32 @@
           </template>
         </AddUserModal>
       </template>
+
+
+
+
+      <template v-slot:body="props">
+
+        <q-tr :props="props" @click="onRowClick(props.row)">
+          <q-td key="full_name" :props="props">
+            {{ props.row.full_name }}
+          </q-td>
+          <q-td key="birthdate" :props="props">
+            {{ props.row.birthdate }}
+          </q-td>
+
+          <q-td key="contact" :props="props">
+            {{ props.row.contact }}
+          </q-td>
+
+          <q-td key="address" :props="props">
+            {{ props.row.address }}
+          </q-td>
+
+
+        </q-tr>
+
+      </template>
     </q-table>
   </div>
 </template>
@@ -24,7 +52,8 @@
 import AddUserModal from "./Modal/AddUserModal.vue";
 import { usePage } from "@inertiajs/vue3";
 import { computed, ref } from 'vue';
-
+import {useDocumentStore} from '@/Store/document'
+import { storeToRefs } from 'pinia';
 const columns = [
   {
     name: "full_name",
@@ -53,7 +82,7 @@ const columns = [
   {
     name: "address",
     required: true,
-    label: "Full Name",
+    label: "Address",
     align: "left",
     field: (row) => row.address,
     format: (val) => `${val}`,
@@ -62,16 +91,24 @@ const columns = [
 
 export default {
   components: { AddUserModal },
+  emits:['selectUser'],
 
-  setup() {
+  setup(props,{emit}) {
     const page = usePage();
     const users = computed(()=>page.props.users)
+    const documentStore = useDocumentStore()
+    const {user} = storeToRefs(documentStore)
 
     
     return {
       columns,
       users,
-      filter:ref('')
+      filter:ref(''),
+      onRowClick:(row)=>{
+        user.value = row
+        emit('selectUser')
+
+      }
     };
   },
 };

@@ -15,13 +15,24 @@
         
         </div>
 
-        <div class="w-full py-2">
+        <div class="w-full  row py-2">
           <q-select
+          dense
+         class="col-9"
             outlined
             v-model="model"
             :options="options"
             label="Select Type"
           />
+          <div class="p-1 row col-3 ">
+            <add-document-type> 
+              <template v-slot="{open}">
+                <q-btn @click="open" dense color="secondary"  class=""  label="Add" style="width:100%"/>
+              </template>
+            </add-document-type>
+          
+          </div>
+       
         </div>
         <q-uploader
           label="Upload File"
@@ -33,6 +44,24 @@
 
     <div class="p-10 col-6 column justify-start"> 
         <div class="p-5 text-lg font-bold">Request Details</div>
+       <div class="column p-5">
+        <div > 
+          <span>Firstname </span>
+          <span v-if="user">{{user.firstname }} </span>
+          
+        </div>
+        <div > 
+          <span>Lastname </span>
+          <span  v-if="user">{{user.lastname}} </span>
+          
+        </div>
+        <div > 
+          <span>Middlename </span>
+          <span  v-if="user">{{user.middlename}} </span>
+          
+        </div>
+
+       </div>
 
     </div>
   </div>
@@ -40,12 +69,23 @@
 
 <script>
 import { ref } from "vue";
-
+import {useDocumentStore} from '@/Store/document'
+import { storeToRefs } from 'pinia'
 import UserModal from './Modal/UserModal.vue';
+
+import AddDocumentType from './Modal/AddDocumentType.vue';
 export default {
-    components: {UserModal},
+    components: {UserModal,AddDocumentType},
+
   setup() {
+
+
+    const documentStore = useDocumentStore()
+      const {user} = storeToRefs(documentStore)
+
     return {
+      user,
+      
       model: ref(null),
       options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
     };
