@@ -39,5 +39,11 @@ class DocumentController extends Controller
 
     }
 
+    public function upload(Request $request){
+
+
+        $file = $request->file('image');
+    }
+
     
 }

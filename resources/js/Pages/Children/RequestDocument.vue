@@ -6,87 +6,124 @@
         <div class="column w-full">
           <span class="py-2"> Requested by:</span>
 
-          <UserModal >
+          <UserModal>
             <template v-slot="{ open }">
-                <q-btn @click="open" color="secondary" label="Select User" />
+              <q-btn @click="open" color="secondary" label="Select User" />
             </template>
-            
           </UserModal>
-        
         </div>
 
-        <div class="w-full  row py-2">
+        <div class="w-full row py-2">
           <q-select
-          dense
-         class="col-9"
+            dense
+            class="col-9"
             outlined
-            v-model="model"
-            :options="options"
+            v-model="documentType"
+            :options="documentTypes"
             label="Select Type"
+         
           />
-          <div class="p-1 row col-3 ">
-            <add-document-type> 
-              <template v-slot="{open}">
-                <q-btn @click="open" dense color="secondary"  class=""  label="Add" style="width:100%"/>
+          <div class="p-1 row col-3">
+            <add-document-type>
+              <template v-slot="{ open }">
+                <q-btn
+                  @click="open"
+                  dense
+                  color="secondary"
+
+                  class=""
+                  label="Add"
+                  style="width: 100%"
+                />
               </template>
             </add-document-type>
-          
           </div>
-       
         </div>
         <q-uploader
           label="Upload File"
-          url="http://localhost:4444/upload"
+          @upload="upload"
+          @added="added"
+          :headers="[ { name: 'Authorization', value: $toks }]"
+          :url="route('upload')"
           style="width: 100%"
+          accept=".pdf, .docx"
+          :factory="upload"
         />
       </div>
     </div>
 
-    <div class="p-10 col-6 column justify-start"> 
-        <div class="p-5 text-lg font-bold">Request Details</div>
-       <div class="column p-5">
-        <div > 
-          <span>Firstname </span>
-          <span v-if="user">{{user.firstname }} </span>
-          
+    <div class="p-10 col-6 column justify-start">
+      <div class="p-5 text-lg font-bold">Request Details</div>
+      <div class="column p-5">
+        <div class="flex">
+          <span class="font-bold w-32" >Firstname: </span>
+          <span class="px-1" >{{ user ? user.firstname :'--' }} </span>
         </div>
-        <div > 
-          <span>Lastname </span>
-          <span  v-if="user">{{user.lastname}} </span>
-          
+        <div class="flex">
+          <span class="font-bold  w-32">Lastname: </span>
+          <span class="px-1" >{{  user ? user.lastname  :'--'}} </span>
         </div>
-        <div > 
-          <span>Middlename </span>
-          <span  v-if="user">{{user.middlename}} </span>
-          
+        <div class="flex">
+          <span class="font-bold w-32">Middlename: </span>
+          <span class="px-1"  >{{ user ? user.middlename:'--' }} </span>
         </div>
 
-       </div>
-
+        <div class="flex">
+          <span  class="font-bold w-32">Document Type: </span>
+          <span class="px-1" >{{ documentType ? documentType.label : '--' }} </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import {useDocumentStore} from '@/Store/document'
-import { storeToRefs } from 'pinia'
-import UserModal from './Modal/UserModal.vue';
-
-import AddDocumentType from './Modal/AddDocumentType.vue';
+import { ref, watchEffect } from "vue";
+import { useDocumentStore } from "@/Store/document";
+import { storeToRefs } from "pinia";
+import UserModal from "./Modal/UserModal.vue";
+import { usePage } from "@inertiajs/vue3";
+import AddDocumentType from "./Modal/AddDocumentType.vue";
+import { router } from "@inertiajs/vue3";
 export default {
-    components: {UserModal,AddDocumentType},
+  components: { UserModal, AddDocumentType },
 
   setup() {
+    const page = usePage();
+    const documentTypes = ref(null);
 
+    watchEffect(() => {
+      if (page.props.documentType) {
+        documentTypes.value = page.props.documentType.map((item) => {
+          return {
+            label: item.name,
+            value: item.id,
+          };
+        });
+      }
+    
+    });
 
-    const documentStore = useDocumentStore()
-      const {user} = storeToRefs(documentStore)
+    const documentStore = useDocumentStore();
+    const { user } = storeToRefs(documentStore);
+    const documentType = ref(null)
+    const file = ref(null)
 
     return {
       user,
       model: ref(null),
       options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
+      documentTypes,
+      documentType,
+      added:(files)=>{
+        console.log('added')
+        file.value= files
+     
+      },
+      upload(files){
+        router.post(route('upload',{file:files}))
+
+      }
     };
   },
 };

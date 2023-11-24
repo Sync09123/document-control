@@ -34,7 +34,7 @@ import DocumentTable from './Children/DocumentTable.vue';
 import {useDocumentStore } from '@/Store/document'
 
 export default {
-    props:['users'],
+    props:['users','documentType'],
   components: { 
     AppLayout, 
     RequestDocument ,
