@@ -19,14 +19,15 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-}); ;
+});
+;
 
 
 
@@ -36,23 +37,23 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard',[
-            'user'=>Auth::user()
+        return Inertia::render('Dashboard', [
+            'user' => Auth::user()
         ]);
     })->name('dashboard');
 
-    Route::prefix('documents')->group(function(){
+    Route::prefix('document')->group(function () {
 
 
-    Route::get('/',[DocumentController::class,'index'])->name('document');
-    Route::post('/type',[DocumentController::class,'storeType'])->name('documentType.create');
-    Route::post('/upload',[DocumentController::class, 'upload'])->name('upload');
+        Route::get('/', [DocumentController::class, 'index'])->name('document');
+        Route::post('/type', [DocumentController::class, 'storeType'])->name('documentType.create');
+        Route::post('/upload', [DocumentController::class, 'upload'])->name('upload');
 
     });
-    Route::prefix('user')->group(function(){
+    Route::prefix('user')->group(function () {
 
-        Route::post('/create',[UserController::class,'store'])->name('user.create');
+        Route::post('/create', [UserController::class, 'store'])->name('user.create');
     });
 
- 
+
 });

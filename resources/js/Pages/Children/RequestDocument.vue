@@ -43,8 +43,8 @@
           label="Upload File"
           @upload="upload"
           @added="added"
-          :headers="[ { name: 'Authorization', value: $toks }]"
-          :url="route('upload')"
+         
+        
           style="width: 100%"
           accept=".pdf, .docx"
           :factory="upload"
@@ -71,6 +71,12 @@
         <div class="flex">
           <span  class="font-bold w-32">Document Type: </span>
           <span class="px-1" >{{ documentType ? documentType.label : '--' }} </span>
+        </div>
+
+        <div>
+          <q-btn color="secondary" :disable="!user && !documentType" @click="upload" label="Save"/>
+
+            
         </div>
       </div>
     </div>
@@ -116,12 +122,20 @@ export default {
       documentTypes,
       documentType,
       added:(files)=>{
-        console.log('added')
-        file.value= files
+        file.value = files[0]
      
       },
-      upload(files){
-        router.post(route('upload',{file:files}))
+      upload(){
+
+       
+        const fileData = new FormData()
+        fileData.append('file_path', file.value)
+        fileData.append('user_info_id', user.value.id)
+        fileData.append('document_type_id', documentType.value.value)
+
+        router.post(route('upload'),fileData,{
+          forceFormData:true
+        })
 
       }
     };
