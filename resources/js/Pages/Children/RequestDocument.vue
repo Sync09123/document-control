@@ -43,7 +43,7 @@
           label="Upload File"
           @upload="upload"
           @added="added"
-         
+         hide-upload-btn
         
           style="width: 100%"
           accept=".pdf, .docx"

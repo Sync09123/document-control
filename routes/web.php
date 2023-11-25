@@ -48,6 +48,7 @@ Route::middleware([
         Route::get('/', [DocumentController::class, 'index'])->name('document');
         Route::post('/type', [DocumentController::class, 'storeType'])->name('documentType.create');
         Route::post('/upload', [DocumentController::class, 'upload'])->name('upload');
+        Route::get('/show/{id}',[DocumentController::class,'showDocument'])->name('display');
 
     });
     Route::prefix('user')->group(function () {

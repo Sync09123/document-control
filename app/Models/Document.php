@@ -9,14 +9,27 @@ class Document extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable = [
 
-        'document_type_id' ,
+        'document_type_id',
         'user_id',
-       'user_info_id' ,
-       'ref_id',
-       'path'
+        'user_info_id',
+        'ref_id',
+        'path'
     ];
 
+
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function userInfo(){
+        return $this->belongsTo(UserInfo::class);
+    }
+
+    public function documentType(){
+        return $this->belongsTo(DocumentType::class);
+    }
 
 }

@@ -1,7 +1,9 @@
 <script setup>
 
 defineProps({
-    user: String,
+    user:  {
+      type: null,
+    },
 });
 
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
