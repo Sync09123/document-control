@@ -1,148 +1,86 @@
 <template>
-    <div >
-      <q-table
-        :title="title ?? 'Table'"
-        :rows="rows"
-        :columns="columns"
-        row-key="name"
-      />
-    </div>
-  </template>
+  <div>
+    <q-table
+      :title="title ?? 'Table'"
+      :rows="documents"
+      :columns="columns"
+      row-key="name"
+    >
+      <template #body="props">
+        <q-tr :props="props">
+          <q-td key="user" :props="props">
+            {{ props.row.user_info.full_name }}
+          </q-td>
+          <q-td key="document_type" :props="props">
+            {{ props.row.document_type.name }}
+          </q-td>
+          <q-td key="date" :props="props">
+            {{ formatDate(props.row.created_at,'MMMM DD YYYY') }}
+          </q-td>
+          <q-td key="prepared_by" :props="props">
+            {{ props.row.user.name }}
+          </q-td>
+
+          <q-td key="action" :props="props">
+          
+            <view-document >
+
+              <template v-slot="{open}" >
+                <q-btn color="secondary" @click="open(props.row.id)" label="View"/>
+
+              </template>
+            </view-document>
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+  </div>
+</template>
   
   <script>
+import { usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
+import formatDate from '@/Util/date'
+import ViewDocument from '@/Pages/Children/Modal/ViewDocument.vue'
 
-  const columns = [
-    {
-      name: 'user',
-      required: true,
-      label: 'Dessert (100g serving)',
-      align: 'left',
-      field: row => row.name,
-      format: val => `${val}`,
-      sortable: true
-    },
-    { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-    { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-    { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-    { name: 'protein', label: 'Protein (g)', field: 'protein' },
-    { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-    { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-    { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
-  ]
-  
-  const rows = [
-    {
-      name: 'Frozen Yogurt',
-      calories: 159,
-      fat: 6.0,
-      carbs: 24,
-      protein: 4.0,
-      sodium: 87,
-      calcium: '14%',
-      iron: '1%'
-    },
-    {
-      name: 'Ice cream sandwich',
-      calories: 237,
-      fat: 9.0,
-      carbs: 37,
-      protein: 4.3,
-      sodium: 129,
-      calcium: '8%',
-      iron: '1%'
-    },
-    {
-      name: 'Eclair',
-      calories: 262,
-      fat: 16.0,
-      carbs: 23,
-      protein: 6.0,
-      sodium: 337,
-      calcium: '6%',
-      iron: '7%'
-    },
-    {
-      name: 'Cupcake',
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      sodium: 413,
-      calcium: '3%',
-      iron: '8%'
-    },
-    {
-      name: 'Gingerbread',
-      calories: 356,
-      fat: 16.0,
-      carbs: 49,
-      protein: 3.9,
-      sodium: 327,
-      calcium: '7%',
-      iron: '16%'
-    },
-    {
-      name: 'Jelly bean',
-      calories: 375,
-      fat: 0.0,
-      carbs: 94,
-      protein: 0.0,
-      sodium: 50,
-      calcium: '0%',
-      iron: '0%'
-    },
-    {
-      name: 'Lollipop',
-      calories: 392,
-      fat: 0.2,
-      carbs: 98,
-      protein: 0,
-      sodium: 38,
-      calcium: '0%',
-      iron: '2%'
-    },
-    {
-      name: 'Honeycomb',
-      calories: 408,
-      fat: 3.2,
-      carbs: 87,
-      protein: 6.5,
-      sodium: 562,
-      calcium: '0%',
-      iron: '45%'
-    },
-    {
-      name: 'Donut',
-      calories: 452,
-      fat: 25.0,
-      carbs: 51,
-      protein: 4.9,
-      sodium: 326,
-      calcium: '2%',
-      iron: '22%'
-    },
-    {
-      name: 'KitKat',
-      calories: 518,
-      fat: 26.0,
-      carbs: 65,
-      protein: 7,
-      sodium: 54,
-      calcium: '12%',
-      iron: '6%'
-    }
-  ]
-  
-  export default {
-    props:['title'],
-    setup () {
+const columns = [
+  {
+    name: "user",
+    required: true,
+    label: "Requested By:",
+    align: "left",
+    //   field: row => row.user.full_name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "document_type",
+    align: "center",
+    label: "Document Type",
+    field: "calories",
+    sortable: true,
+  },
+  { name: "date", label: "Date Requested", field: "fat", sortable: true },
+  { name: "prepared_by", label: "Prepared by", field: "carbs" },
+  {
+    name: "action",
+    label: "Action",
+    align: "center",
+  },
+];
+export default {
+  props: ["title"],
+  components:{ViewDocument},
+  setup() {
+    const page = usePage();
+    const documents = ref(page.props.documents);
 
-      return {
-        columns,
-        rows,
-        
-      }
-    }
-  }
-  </script>
+    return {
+      columns,
+      documents,
+      formatDate
+    };
+  },
+};
+</script>
   
