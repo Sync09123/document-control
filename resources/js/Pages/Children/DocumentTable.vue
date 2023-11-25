@@ -13,7 +13,7 @@
 
   const columns = [
     {
-      name: 'name',
+      name: 'user',
       required: true,
       label: 'Dessert (100g serving)',
       align: 'left',
