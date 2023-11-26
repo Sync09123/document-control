@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-
+use PDF;
 class DocumentController extends Controller
 {
     //
@@ -22,7 +22,7 @@ class DocumentController extends Controller
             'create' => route('user.create'),
             'users' => UserInfo::all(),
             'documentType' => DocumentType::all() ,
-            'documents'=>Document::with(['user','userInfo','documentType'])->get()
+            'documents'=>fn()=> Document::with(['user','userInfo','documentType'])->get()
 
         ]);
 
@@ -56,8 +56,6 @@ class DocumentController extends Controller
 
         // return dd($user->id);
 
-
-
         if ($file = $request->file('file_path')) {
 
 
@@ -65,7 +63,7 @@ class DocumentController extends Controller
 
             $fileExtension = $file->getClientOriginalExtension();
             $ref_id = uniqid();
-            $fileName = $ref_id . '.' . $fileExtension;
+         
 
 
             $document = Document::create([
@@ -77,7 +75,20 @@ class DocumentController extends Controller
 
             ]);
 
-            $file->move('documents', $fileName);
+            if($fileExtension === 'docx'){
+                $fileName = $ref_id . '.' . 'pdf';
+                $domPdfPath = base_path('vendor/dompdf/dompdf');
+                \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
+                \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
+                $Content = \PhpOffice\PhpWord\IOFactory::load($file); 
+                $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
+                $PDFWriter->save(public_path('documents/'.$fileName)); 
+            }else{
+                $fileName = $ref_id . '.' . $fileExtension;
+                $file->move('documents', $fileName);
+            }
+
+           
 
             $document->path = $fileName;
             $document->save();
