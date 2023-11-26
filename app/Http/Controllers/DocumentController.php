@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\HasPDF;
+use App\Http\Traits\HasQR;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\UserInfo;
@@ -14,6 +16,7 @@ class DocumentController extends Controller
 {
     //
 
+    use HasPDF,HasQR;
 
     public function index()
     {
@@ -77,12 +80,16 @@ class DocumentController extends Controller
 
             if($fileExtension === 'docx'){
                 $fileName = $ref_id . '.' . 'pdf';
-                $domPdfPath = base_path('vendor/dompdf/dompdf');
-                \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
-                \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
-                $Content = \PhpOffice\PhpWord\IOFactory::load($file); 
+
+                $Content = $this->converToPDF($file,$fileName);
                 $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
                 $PDFWriter->save(public_path('documents/'.$fileName)); 
+                // $domPdfPath = base_path('vendor/dompdf/dompdf');
+                // \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
+                // \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
+                // $Content = \PhpOffice\PhpWord\IOFactory::load($file); 
+                // $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
+                // $PDFWriter->save(public_path('documents/'.$fileName)); 
             }else{
                 $fileName = $ref_id . '.' . $fileExtension;
                 $file->move('documents', $fileName);
