@@ -10,6 +10,7 @@ trait HasPDF{
         $domPdfPath = base_path('vendor/dompdf/dompdf');
         \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
         \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
+        \PhpOffice\PhpWord\Settings::setZipClass(\PhpOffice\PhpWord\Settings::PCLZIP); 
        return \PhpOffice\PhpWord\IOFactory::load($file); 
       
     }

@@ -10,7 +10,7 @@ class QrCodeController extends Controller
     //
     public function show()
     {
-        return QrCode::generate(
+        return QrCode::format('png')->generate(
             'Hello, World!',
         );
     }
