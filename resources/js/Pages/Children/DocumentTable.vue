@@ -5,7 +5,26 @@
       :rows="documents"
       :columns="columns"
       row-key="name"
+      :filter="filter"
     >
+    <template #top-left >
+      <div>
+        <q-btn @click="push" label="Push Data"/>
+      </div>
+    
+    </template>
+
+    <template #top-right >
+      <div>
+        <q-input v-model="filter" borderless dense debounce="300" placeholder="Search">
+          <template v-slot:append>
+            <q-icon  name="search" />
+          </template>
+        </q-input>
+
+      </div>
+    
+    </template>
       <template #body="props">
         <q-tr :props="props">
           <q-td key="user" :props="props">
@@ -38,7 +57,7 @@
 </template>
   
   <script>
-import { usePage } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import formatDate from '@/Util/date'
 import ViewDocument from '@/Pages/Children/Modal/ViewDocument.vue'
@@ -78,7 +97,11 @@ export default {
     return {
       columns,
       documents,
-      formatDate
+      formatDate,
+      filter:ref(''),
+      push:()=>{
+        router.get(route('push'))
+      }
     };
   },
 };

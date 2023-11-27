@@ -20,7 +20,8 @@ class DocumentController extends Controller
 
 
     protected DocumentManager $manager;
-    public function __construct(DocumentManager $manager){
+    public function __construct(DocumentManager $manager)
+    {
         $this->manager = $manager;
     }
 
@@ -32,7 +33,9 @@ class DocumentController extends Controller
 
             'users' => UserInfo::all(),
             'documentType' => DocumentType::all(),
-            'documents' => Document::with(['user', 'userInfo', 'documentType'])->get()
+            'documents' => Document::with(['user', 'userInfo', 'documentType'])
+                ->orderBy('created_at', 'desc')
+                ->get()
 
         ]);
 

@@ -44,7 +44,7 @@
           @upload="upload"
           @added="added"
          hide-upload-btn
-        
+        @removed="removeFile"
           style="width: 100%"
           accept=".pdf, .docx"
           :factory="upload"
@@ -74,12 +74,16 @@
         </div>
 
         <div>
-          <q-btn color="secondary" :disable="!user && !documentType" @click="upload" label="Save"/>
+       
+          <q-btn color="secondary" :disable="user==null || documentType==null || !hasFile" @click="upload" label="Save"/>
 
             
         </div>
       </div>
     </div>
+
+     
+    {{hasFile}}
   </div>
 </template>
 
@@ -114,6 +118,7 @@ export default {
     const { user } = storeToRefs(documentStore);
     const documentType = ref(null)
     const file = ref(null)
+    const hasFile = ref(false)
 
     return {
       user,
@@ -121,9 +126,14 @@ export default {
       options: ["Google", "Facebook", "Twitter", "Apple", "Oracle"],
       documentTypes,
       documentType,
+      file,
+      hasFile,
       added:(files)=>{
         file.value = files[0]
-     
+        hasFile.value = true
+      },
+      removeFile:(file)=>{
+        hasFile.value = false
       },
       upload(){
 
@@ -136,7 +146,8 @@ export default {
           forceFormData:true
         })
 
-      }
+      },
+      
     };
   },
 };

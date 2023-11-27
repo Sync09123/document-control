@@ -15,7 +15,8 @@ class Document extends Model
         'user_id',
         'user_info_id',
         'ref_id',
-        'path'
+        'path',
+        'pushed'
     ];
 
 

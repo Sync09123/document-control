@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('user_info_id');
             $table->string('path');
- 
+            $table->boolean('pushed')->default(false);
       
             $table->timestamps();
 
