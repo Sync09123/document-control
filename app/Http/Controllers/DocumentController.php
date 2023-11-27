@@ -2,34 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\HasPDF;
-use App\Http\Traits\HasQR;
+use App\Http\Managers\DocumentManager;
+
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+
 use PDF;
+
 class DocumentController extends Controller
 {
     //
 
-    use HasPDF,HasQR;
+
+
+    protected DocumentManager $manager;
+    public function __construct(DocumentManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
 
     public function index()
     {
 
         return Inertia::render('Document', [
-            'create' => route('user.create'),
+
             'users' => UserInfo::all(),
-            'documentType' => DocumentType::all() ,
-            'documents'=>fn()=> Document::with(['user','userInfo','documentType'])->get()
+            'documentType' => DocumentType::all(),
+            'documents' => Document::with(['user', 'userInfo', 'documentType'])
+                ->orderBy('created_at', 'desc')
+                ->get()
 
         ]);
 
     }
+
 
     public function storeType(Request $request)
     {
@@ -52,74 +63,16 @@ class DocumentController extends Controller
     {
 
 
-        //return dd($request->file());
-
-
-        $user = Auth::user();
-
-        // return dd($user->id);
-
-        if ($file = $request->file('file_path')) {
-
-
-
-
-            $fileExtension = $file->getClientOriginalExtension();
-            $ref_id = uniqid();
-         
-
-
-            $document = Document::create([
-                'user_id' => $user->id,
-                'user_info_id' => $request['user_info_id'],
-                'ref_id' => $ref_id,
-                'path' => $ref_id,
-                'document_type_id' => $request['document_type_id']
-
-            ]);
-
-            if($fileExtension === 'docx'){
-                $fileName = $ref_id . '.' . 'pdf';
-
-                $Content = $this->converToPDF($file,$fileName);
-                $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
-                $PDFWriter->save(public_path('documents/'.$fileName)); 
-                // $domPdfPath = base_path('vendor/dompdf/dompdf');
-                // \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
-                // \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
-                // $Content = \PhpOffice\PhpWord\IOFactory::load($file); 
-                // $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
-                // $PDFWriter->save(public_path('documents/'.$fileName)); 
-            }else{
-                $fileName = $ref_id . '.' . $fileExtension;
-                $file->move('documents', $fileName);
-            }
-
-           
-
-            $document->path = $fileName;
-            $document->save();
-
-            $outputFilePath = public_path("documents-qr/".$fileName);
-            $this->fillPDFFile("documents/".$fileName, $outputFilePath);
-
-        }
-
+        $this->manager->uploadDocument($request);
 
         return to_route('document');
     }
 
 
-    public function showDocument(String $id)
+    public function showDocument(string $id)
     {
-
-        
         $document = Document::find($id);
-
-
-        return response()->file('documents-qr/'.$document->path);
-
-
+        return response()->file('documents/files/' . $document->path);
 
     }
 

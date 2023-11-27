@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\PushDataController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -8,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+use Illuminate\Support\Facades\Storage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,5 +61,9 @@ Route::middleware([
     });
 
 
+    Route::get('/push',[PushDataController::class, 'pushToClient'])->name('push');
+
+
 });
 Route::get('/qr', [QrCodeController::class, 'show']);
+

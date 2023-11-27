@@ -10,16 +10,42 @@
       </q-card-section>
       <q-card-section class="row items-center">
         <div class="w-full">
-            {{bag}}
+          {{ bag }}
           <q-form @submit.prevent="onSubmit">
-            <div class="text-red-500" v-if="errors.firstname"> {{errors.firstname}}</div>
-            <q-input v-model="form.firstname" class="py-1" outlined label="Firstname*" />
-            <div class="text-red-500" v-if="errors.lastname"> {{errors.lastname}}</div>
-            <q-input v-model="form.lastname" class="py-1" outlined label="Lastname*" />
+            <div class="text-red-500" v-if="errors.firstname">
+              {{ errors.firstname }}
+            </div>
+            <q-input
+              v-model="form.firstname"
+              class="py-1"
+              outlined
+              label="Firstname*"
+            />
+            <div class="text-red-500" v-if="errors.lastname">
+              {{ errors.lastname }}
+            </div>
+            <q-input
+              v-model="form.lastname"
+              class="py-1"
+              outlined
+              label="Lastname*"
+            />
 
-            <q-input v-model="form.middlename" class="py-1" outlined label="Middlename" />
-            <div class="text-red-500" v-if="errors.birthdate"> {{errors.birthdate}}</div>
-            <q-input outlined v-model="form.birthdate" label="Birth Date*" mask="date" >
+            <q-input
+              v-model="form.middlename"
+              class="py-1"
+              outlined
+              label="Middlename"
+            />
+            <div class="text-red-500" v-if="errors.birthdate">
+              {{ errors.birthdate }}
+            </div>
+            <q-input
+              outlined
+              v-model="form.birthdate"
+              label="Birth Date*"
+              mask="date"
+            >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy
@@ -41,9 +67,20 @@
                 </q-icon>
               </template>
             </q-input>
-            
-            <q-input  v-model="form.contact" class="py-1" outlined label="Contact" />
-            <q-input v-model="form.address" class="py-1" type="textarea" outlined label="Address" />
+
+            <q-input
+              v-model="form.contact"
+              class="py-1"
+              outlined
+              label="Contact"
+            />
+            <q-input
+              v-model="form.address"
+              class="py-1"
+              type="textarea"
+              outlined
+              label="Address"
+            />
 
             <div class="row justify-end">
               <q-btn type="submit" label="Submit" color="secondary" />
@@ -58,21 +95,15 @@
 <script>
 import { router } from "@inertiajs/vue3";
 import { computed, ref, watchEffect } from "vue";
-import { usePage } from '@inertiajs/vue3'
+import { usePage } from "@inertiajs/vue3";
 export default {
-
   setup() {
-    const page = usePage()
+    const page = usePage();
 
-    const errors = computed(() => page.props.errors)
-    const bag = computed(()=>Object.keys(page.props.errors).length > 0)
-
-    
-
+    const errors = computed(() => page.props.errors);
+    const bag = computed(() => Object.keys(page.props.errors).length > 0);
 
     const addDialog = ref(false);
-
-
 
     const form = ref({
       firstname: "",
@@ -84,17 +115,17 @@ export default {
       address: "",
     });
 
-    watchEffect(()=>{
-        if(!bag.value){
-            addDialog.value = false
-         }
-    })
+    watchEffect(() => {
+      if (!bag.value) {
+        addDialog.value = false;
+      }
+    });
 
-    watchEffect(()=>{
-            if(!errors.value){
-                addDialog.value=  false
-            }
-         })
+    watchEffect(() => {
+      if (!errors.value) {
+        addDialog.value = false;
+      }
+    });
 
     return {
       addDialog,
@@ -105,21 +136,12 @@ export default {
         addDialog.value = true;
       },
       router,
-      onSubmit: async() => {
-       
-
-         router.post(route("user.create", form.value),{
-            preserveState: (page) => Object.keys(page.props.errors).length > 0,
-         })
-         
-         
-      
-         
-         
-   
-        
+      onSubmit: async () => {
+        router.post(route("user.create", form.value), {
+          preserveState: (page) => Object.keys(page.props.errors).length > 0,
+        });
       },
-      errors
+      errors,
     };
   },
 };

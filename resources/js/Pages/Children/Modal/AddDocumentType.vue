@@ -9,14 +9,19 @@
       </q-card-section>
 
       <q-card-section class="p-5">
-       
+ 
+        
+          <div>
 
-            <div>
+            <div class="text-red-400" v-if="errors.name">
+{{errors.name}}
+            </div>
+
                 <q-input v-model="name" dense outlined label="Name"/>
             </div>
 
             <div class="row justify-end py-1">
-                <ConfirmDialog @onSubmit="onSubmit" >
+                <ConfirmDialog :message="`Confirm adding ${name}?`" @onSubmit="onSubmit" >
 
                     <template v-slot="{open}">
                         <q-btn  @click="open" type="submit" color="secondary" label="Submit"/>
@@ -28,6 +33,10 @@
             </div>
 
 
+      
+
+            
+
         
     </q-card-section>
     </q-card>
@@ -35,25 +44,43 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import ConfirmDialog from '@/Components/ConfirmDialog.vue'
-import { router } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 export default {
     components:{ConfirmDialog},
+
+  
   setup() {
+    const page = usePage()
     const dialog = ref(false);
     const name = ref('')
+    const bag = computed(() => Object.keys(page.props.errorBags).length > 0);
+
+    const errors = computed(()=>page.props.errors)
+
+    watchEffect(() => {
+      if (!bag.value) {
+        dialog.value = false;
+      }
+    });
+
+ 
     return {
       open: () => {
         dialog.value = true;
       },
       dialog,
-      name,
+      name,errors,
+
+
       onSubmit:async()=>{
 
-         router.post(route('documentType.create',{name:name.value}))
+         router.post(route('documentType.create',{name:name.value}),{
+          preserveState: (page) => Object.keys(page.props.errors).length > 0,
+        })
 
-        console.log('submit',)
+         
       }
     };
   },

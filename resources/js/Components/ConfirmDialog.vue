@@ -4,8 +4,8 @@
   <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
-          <span class="q-ml-sm">You are currently not connected to any network.</span>
+          <q-avatar color="secondary" text-color="white" :icon="icon ?? 'question_mark' " />
+          <span class="q-ml-sm text-lg">{{message}}</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -20,6 +20,7 @@
 import { ref } from 'vue'
 export default {
     emits:['onSubmit'],
+    props:['message','icon'],
     setup(props,{emit}){
         const confirm = ref(false)
 
