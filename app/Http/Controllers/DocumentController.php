@@ -83,16 +83,11 @@ class DocumentController extends Controller
 
                 $Content = $this->converToPDF($file,$fileName);
                 $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
-                $PDFWriter->save(public_path('documents/'.$fileName)); 
-                // $domPdfPath = base_path('vendor/dompdf/dompdf');
-                // \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
-                // \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF'); 
-                // $Content = \PhpOffice\PhpWord\IOFactory::load($file); 
-                // $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content,'PDF');
-                // $PDFWriter->save(public_path('documents/'.$fileName)); 
+                $PDFWriter->save(public_path('documents/temp/'.$fileName)); 
+              
             }else{
                 $fileName = $ref_id . '.' . $fileExtension;
-                $file->move('documents', $fileName);
+                $file->move('documents/temp/', $fileName);
             }
 
            
@@ -100,8 +95,8 @@ class DocumentController extends Controller
             $document->path = $fileName;
             $document->save();
 
-            $outputFilePath = public_path("documents-qr/".$fileName);
-            $this->fillPDFFile("documents/".$fileName, $outputFilePath);
+            $outputFilePath = public_path("documents/files/".$fileName);
+            $this->fillPDFFile("documents/temp/".$fileName, $outputFilePath);
 
         }
 
@@ -117,7 +112,7 @@ class DocumentController extends Controller
         $document = Document::find($id);
 
 
-        return response()->file('documents-qr/'.$document->path);
+        return response()->file('documents/files/'.$document->path);
 
 
 
