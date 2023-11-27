@@ -127,7 +127,6 @@ export default {
       },
       upload(){
 
-       
         const fileData = new FormData()
         fileData.append('file_path', file.value)
         fileData.append('user_info_id', user.value.id)

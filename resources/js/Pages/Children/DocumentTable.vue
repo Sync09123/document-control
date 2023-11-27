@@ -39,7 +39,7 @@
   
   <script>
 import { usePage } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import formatDate from '@/Util/date'
 import ViewDocument from '@/Pages/Children/Modal/ViewDocument.vue'
 
@@ -73,7 +73,7 @@ export default {
   components:{ViewDocument},
   setup() {
     const page = usePage();
-    const documents = ref(page.props.documents);
+    const documents = computed(()=>page.props.documents);
 
     return {
       columns,
