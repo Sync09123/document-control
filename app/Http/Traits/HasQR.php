@@ -44,23 +44,23 @@ trait HasQR{
 
               
 
-            $fpdi->SetFont("helvetica", "", 15);
+             $fpdi->SetFont("Times", "", 10);
 
-            $fpdi->SetTextColor(153,0,153);
-
-  
-
-            $left = 10;
-
-            $top = 10;
-
-            $text = "NiceSnippets.com";
-
-            $fpdi->Text($left,$top,$text);
+             $fpdi->SetTextColor(169,169,169);
 
   
 
-            $fpdi->Image( public_path('img-1701077981.png') , 40, 90);
+            // $left = 10;
+
+            $top = 23;
+
+             $text = "Verify here";
+
+             $fpdi->Text($size['width']-20,$top,$text);
+         
+  
+
+            $fpdi->Image( public_path('img-1701077981.png'),$size['width']-20,2,17,17);
 
         }
 
