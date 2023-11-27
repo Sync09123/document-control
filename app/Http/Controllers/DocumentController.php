@@ -68,14 +68,8 @@ class DocumentController extends Controller
 
     public function showDocument(string $id)
     {
-
-
         $document = Document::find($id);
-
-
         return response()->file('documents/files/' . $document->path);
-
-
 
     }
 
