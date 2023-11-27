@@ -100,6 +100,9 @@ class DocumentController extends Controller
             $document->path = $fileName;
             $document->save();
 
+            $outputFilePath = public_path("documents-qr/".$fileName);
+            $this->fillPDFFile("documents/".$fileName, $outputFilePath);
+
         }
 
 
@@ -114,7 +117,7 @@ class DocumentController extends Controller
         $document = Document::find($id);
 
 
-        return response()->file('documents/'.$document->path);
+        return response()->file('documents-qr/'.$document->path);
 
 
 

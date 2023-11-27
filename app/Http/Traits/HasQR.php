@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Facades\Storage;
 trait HasQR{
 
 
@@ -12,7 +13,7 @@ trait HasQR{
 
 
         return  QrCode::format('png')->generate(
-            env('QR_SCANNER_URL') .'/'-$name
+            env('QR_SCANNER_URL') .'/'.$name
         );
     }
 
@@ -59,7 +60,7 @@ trait HasQR{
 
   
 
-            $fpdi->Image($this->generateQR('test'), 40, 90);
+            $fpdi->Image( public_path('img-1701077981.png') , 40, 90);
 
         }
 
