@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -58,3 +59,4 @@ Route::middleware([
 
 
 });
+Route::get('/qr', [QrCodeController::class, 'show']);
