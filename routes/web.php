@@ -58,7 +58,7 @@ Route::middleware([
     Route::prefix('user')->group(function () {
 
         Route::post('/create', [UserController::class, 'store'])->name('user.create');
-
+        Route::post('/update',[UserController::class,'update'])->name('user.update');
         Route::delete('destroy/{id}',[UserController::class,'destroy'])->name('user.destroy');
     });
 

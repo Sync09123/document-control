@@ -30,17 +30,17 @@
       <template v-slot:body="props">
         <q-tr :props="props" @dblclick="onRowClick(props.row)">
 
-          <q-td key="firstname" :props="props">
+          <q-td key="lastname" :props="props">
             {{ props.row.lastname }}
          
-            <q-popup-edit @update:model-value="onEdit" v-model="props.row.lastname" title="Edit the Name" auto-save v-slot="scope">
-              <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+            <q-popup-edit @update:model-value="onEdit(props.row.id, 'lastname',$event)"  v-model="props.row.lastname" title="Edit the Name" auto-save v-slot="scope">
+              <q-input  v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
             </q-popup-edit>
           </q-td>
           <q-td key="firstname" :props="props">
             {{ props.row.firstname }}
             
-            <q-popup-edit v-model="props.row.firstname" title="Edit the Name" auto-save v-slot="scope">
+            <q-popup-edit  @update:model-value="onEdit(props.row.id, 'firstname',$event)" v-model="props.row.firstname" title="Edit the Name" auto-save v-slot="scope">
               <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
             </q-popup-edit>
           </q-td>
@@ -50,10 +50,19 @@
 
           <q-td key="contact" :props="props">
             {{ props.row.contact }}
+
+
+            <q-popup-edit @update:model-value="onEdit(props.row.id, 'contact',$event)"  v-model="props.row.contact" title="Edit the Name" auto-save v-slot="scope">
+              <q-input  v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+            </q-popup-edit>
           </q-td>
 
           <q-td key="address" :props="props">
             {{ props.row.address }}
+
+            <q-popup-edit @update:model-value="onEdit(props.row.id, 'address',$event)"  v-model="props.row.address" title="Edit the Name" auto-save v-slot="scope">
+              <q-input  v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+            </q-popup-edit>
           </q-td>
           <q-td key="actions" :props="props">
             <div class="px-5">
@@ -163,10 +172,14 @@ export default {
         console.log('id',id)
         router.delete(route('user.destroy',id))
       },
-      onEdit:(value)=>{
+      onEdit:(id,key,value)=>{
 
-        
-        console.log('edit',value)
+        router.post(route('user.update',{
+          id:id,
+          key:key,
+          value:value
+        }))
+      
       }
     };
   },

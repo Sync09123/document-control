@@ -55,9 +55,17 @@ class UserController extends Controller
 
     }
 
-    public function update(Request $request,String $id){
+    public function update(Request $request){
+
+        $user = UserInfo::find($request['id']);
+
+        $user[$request['key']] = $request['value'];
+
+        $user->save();
 
 
-        dd($request->all())
+       // dd($user);
+
+       return to_route('document');
     }
 }
