@@ -32,8 +32,13 @@ class PushDataController extends Controller
                 $existingData = json_decode(Storage::disk('client')->get($filePath), true);
             }
 
+            if($existingData){
+                $combinedData = array_merge($existingData, $documents->toArray());   
+            }else{
+                $combinedData = $documents->toArray();
+            }
            
-            $combinedData = array_merge($existingData, $documents->toArray());   
+            
             foreach ($documents as $document) {
                 $document->update(['pushed' => true]);
             } 

@@ -21,8 +21,7 @@ class UserController extends Controller
 
 
 
-
-        $user = UserInfo::create([
+        UserInfo::create([
             'firstname'=>$request['firstname'],
             'lastname'=>$request['lastname'],
             'middlename'=>$request['middlename'],
@@ -39,5 +38,34 @@ class UserController extends Controller
 
 
 
+    }
+
+    public function destroy(String $id){
+
+
+        $user = UserInfo::find($id);
+
+        if($user){
+            $user->delete();
+        }
+
+
+        return to_route('document');
+
+
+    }
+
+    public function update(Request $request){
+
+        $user = UserInfo::find($request['id']);
+
+        $user[$request['key']] = $request['value'];
+
+        $user->save();
+
+
+       // dd($user);
+
+       return to_route('document');
     }
 }

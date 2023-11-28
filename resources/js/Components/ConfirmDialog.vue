@@ -4,7 +4,7 @@
   <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar color="secondary" text-color="white" :icon="icon ?? 'question_mark' " />
+          <q-avatar :color="iconColor?? 'secondary'" text-color="white" :icon="icon ?? 'question_mark' " />
           <span class="q-ml-sm text-lg">{{message}}</span>
         </q-card-section>
 
@@ -20,7 +20,7 @@
 import { ref } from 'vue'
 export default {
     emits:['onSubmit'],
-    props:['message','icon'],
+    props:['message','icon','iconColor'],
     setup(props,{emit}){
         const confirm = ref(false)
 

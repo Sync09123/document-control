@@ -9,7 +9,7 @@
     >
     <template #top-left >
       <div>
-        <q-btn @click="push" label="Push Data"/>
+        <q-btn color="secondary" @click="push" label="Push Data"/>
       </div>
     
     </template>
@@ -28,7 +28,14 @@
       <template #body="props">
         <q-tr :props="props">
           <q-td key="user" :props="props">
-            {{ props.row.user_info.full_name }}
+
+            <div v-if="props.row.user_info">
+              {{ props.row.user_info.full_name }}
+            </div>
+            <div v-else>
+              [Deleted]
+            </div>
+          
           </q-td>
           <q-td key="document_type" :props="props">
             {{ props.row.document_type.name }}
