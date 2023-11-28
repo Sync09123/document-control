@@ -146,6 +146,11 @@ export default {
           forceFormData:true
         })
 
+
+        user.value= null
+        documentType.value = null
+        hasFile.value = false
+
       },
       
     };
