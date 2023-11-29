@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-lg rounded-lg p-5">
+  <div class="shadow-lg text-white bg-secondary rounded-lg p-5">
     <div class="column">
         <div class="text-md font-semibold"> {{title}}</div>
         <div class="text-3xl font-bold py-2">  {{value}} </div>
