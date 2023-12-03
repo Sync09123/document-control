@@ -27,6 +27,9 @@
     </template>
       <template #body="props">
         <q-tr :props="props">
+          <q-td key="reference_id" :props="props">
+            {{ props.row.ref_id}}
+          </q-td>
           <q-td key="user" :props="props">
 
             <div v-if="props.row.user_info">
@@ -70,6 +73,15 @@ import formatDate from '@/Util/date'
 import ViewDocument from '@/Pages/Children/Modal/ViewDocument.vue'
 
 const columns = [
+{
+    name: "reference_id",
+    required: true,
+    label: "Reference Id:",
+    align: "left",
+    //   field: row => row.user.full_name,
+  //  format: (val) => `${val}`,
+    sortable: true,
+  },
   {
     name: "user",
     required: true,

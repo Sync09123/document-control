@@ -17,7 +17,7 @@ trait HasQR
         $image = QrCode::format('png')
         ->size(200)->errorCorrection('H')
         ->generate(
-            $name
+            env('CLIENT_URL') . $name
 
         );
         $output_file = '/documents/qr/' .$name . '.png';
